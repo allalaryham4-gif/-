@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور المؤمن - الإصدار الشامل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --accent: #f59e0b;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            background-color: #0f172a;
+        }
+        .quran-font { font-family: 'Amiri', serif; }
+        
+        .bg-home {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1590076175571-4b5458623796?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-position: center;
+        }
+        .bg-quran {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-position: center;
+        }
+        .bg-athkar {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-position: center;
+        }
+        .bg-prayer {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-position: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 2rem;
+        }
+
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-item.active { color: white; background: var(--primary); transform: translateY(-5px); }
+        .nav-item.active i { transform: scale(1.1); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+    </style>
+</head>
+<body class="h-screen flex flex-col transition-all duration-500 bg-home" id="app-body">
+
+    <!-- Header -->
+    <header class="p-5 flex justify-between items-center z-50 relative">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-2 rounded-2xl backdrop-blur-md">
+                <i data-lucide="heart" class="text-white" fill="currentColor"></i>
+            </div>
+            <h1 class="text-xl font-black text-white" id="page-title">نور المؤمن</h1>
+        </div>
+        <div id="location-badge" class="text-white/80 text-[10px] flex items-center gap-1 bg-black/20 px-3 py-1 rounded-full">
+            <i data-lucide="map-pin" size="12"></i>
+            <span id="city-name">جاري تحديد الموقع...</span>
+        </div>
+    </header>
+
+    <!-- Main Display -->
+    <main id="main-content" class="flex-1 overflow-y-auto px-5 pb-32 relative z-10 custom-scrollbar">
+        <!-- يتم تحميل المحتوى هنا -->
+    </main>
+
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 h-24 bg-black/40 backdrop-blur-2xl border-t border-white/10 flex justify-around items-center px-4 z-[100]">
+        <button onclick="switchTab('quran')" id="nav-quran" class="nav-item flex flex-col items-center gap-1 text-white/50 p-2 rounded-2xl transition-all">
+            <i data-lucide="book-open" size="20"></i>
+            <span class="text-[9px] font-bold">المصحف</span>
+        </button>
+
+        <button onclick="switchTab('prayer')" id="nav-prayer" class="nav-item flex flex-col items-center gap-1 text-white/50 p-2 rounded-2xl transition-all">
+            <i data-lucide="shield-check" size="20"></i>
+            <span class="text-[9px] font-bold">الخشوع</span>
+        </button>
+        
+        <button onclick="switchTab('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-white/50 p-4 rounded-3xl transition-all -mt-8 shadow-2xl">
+            <i data-lucide="home" size="24"></i>
+        </button>
+
+        <button onclick="switchTab('athkar')" id="nav-athkar" class="nav-item flex flex-col items-center gap-1 text-white/50 p-2 rounded-2xl transition-all">
+            <i data-lucide="sparkles" size="20"></i>
+            <span class="text-[9px] font-bold">الأذكار</span>
+        </button>
+
+        <button onclick="openAcademy()" id="nav-academy" class="nav-item flex flex-col items-center gap-1 text-white/50 p-2 rounded-2xl transition-all">
+            <i data-lucide="graduation-cap" size="20"></i>
+            <span class="text-[9px] font-bold">الأكاديمية</span>
+        </button>
+    </nav>
+
+    <!-- Modal Sheets -->
+    <div id="full-sheet" class="fixed inset-0 z-[200] bg-white hidden overflow-y-auto animate-fade-in">
+        <!-- محتوى التفاصيل -->
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        let activeTab = 'home';
+        let tasbihCount = 0;
+        let userLocation = { city: "مكة المكرمة", lat: 21.4225, lng: 39.8262 };
+
+        const quranSurahs = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        async function init() {
+            lucide.createIcons();
+            detectLocation();
+            switchTab('home');
+        }
+
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    userLocation.lat = pos.coords.latitude;
+                    userLocation.lng = pos.coords.longitude;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.lat}&lon=${userLocation.lng}&accept-language=ar`);
+                        const data = await res.json();
+                        userLocation.city = data.address.city || data.address.town || data.address.state || "موقعك الحالي";
+                        document.getElementById('city-name').innerText = userLocation.city;
+                    } catch(e) { console.error("Location error", e); }
+                });
+            }
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const body = document.getElementById('app-body');
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-${tab}`);
+            if(activeNav) activeNav.classList.add('active');
+
+            body.className = `h-screen flex flex-col transition-all duration-700 bg-${tab}`;
+
+            if (tab === 'home') renderHome();
+            else if (tab === 'quran') renderQuran();
+            else if (tab === 'athkar') renderAthkar();
+            else if (tab === 'prayer') renderPrayerAcademy();
+            
+            lucide.createIcons();
+        }
+
+        function renderHome() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="space-y-6 pt-4 animate-fade-in">
+                    <div class="glass-card p-6 text-white text-center">
+                        <div class="flex justify-between items-center mb-4 text-[10px] opacity-70">
+                            <span>${new Date().toLocaleDateString('ar-SA')}</span>
+                            <span class="font-bold">مواقيت الصلاة</span>
+                        </div>
+                        <div class="grid grid-cols-5 gap-1">
+                            ${['فجر', 'ظهر', 'عصر', 'مغرب', 'عشاء'].map((name, i) => `
+                                <div class="flex flex-col items-center p-2 rounded-xl bg-white/5">
+                                    <span class="text-[8px] opacity-60 mb-1">${name}</span>
+                                    <span class="text-[10px] font-black">${['05:12', '12:22', '15:40', '18:02', '19:32'][i]}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center py-6">
+                        <div onclick="vibrate(); incrementTasbih();" class="w-60 h-60 glass-card border-[10px] border-white/10 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all shadow-2xl">
+                            <span id="tasbih-val" class="text-7xl font-black text-white">${tasbihCount}</span>
+                            <span class="text-[10px] text-white/50 font-bold mt-2 uppercase tracking-widest">سبحان الله</span>
+                        </div>
+                        <button onclick="tasbihCount=0; renderHome();" class="mt-6 text-white/20 hover:text-white transition-all"><i data-lucide="rotate-ccw" size="20"></i></button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div onclick="switchTab('prayer')" class="glass-card p-4 flex flex-col items-center gap-2 cursor-pointer bg-gradient-to-b from-white/10 to-transparent">
+                            <i data-lucide="heart" class="text-rose-400"></i>
+                            <span class="text-[11px] text-white font-bold">تعلم الخشوع</span>
+                        </div>
+                        <div onclick="openAcademy()" class="glass-card p-4 flex flex-col items-center gap-2 cursor-pointer bg-gradient-to-b from-white/10 to-transparent">
+                            <i data-lucide="video" class="text-amber-400"></i>
+                            <span class="text-[11px] text-white font-bold">أكاديمية نور</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function renderQuran() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="space-y-4 pt-4 animate-fade-in">
+                    <div class="glass-card p-4 flex items-center gap-3">
+                        <i data-lucide="search" class="text-white/30" size="18"></i>
+                        <input type="text" placeholder="بحث في السور..." class="bg-transparent border-none outline-none text-white w-full text-sm">
+                    </div>
+                    <div class="grid grid-cols-1 gap-2">
+                        ${quranSurahs.map((name, i) => `
+                            <div onclick="openSurahDetails('${name}', ${i+1})" class="glass-card p-4 flex justify-between items-center cursor-pointer hover:bg-white/10">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg text-white font-black text-[10px]">${i+1}</span>
+                                    <span class="text-white text-sm font-bold">${name}</span>
+                                </div>
+                                <i data-lucide="chevron-left" class="text-white/20" size="14"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function renderPrayerAcademy() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="space-y-6 pt-4 animate-fade-in">
+                    <div class="p-6 bg-gradient-to-r from-sky-600 to-indigo-700 rounded-[2.5rem] shadow-xl text-white">
+                        <h2 class="text-xl font-black mb-2">تعلم الصلاة بخشوع</h2>
+                        <p class="text-[11px] opacity-80 leading-relaxed">دليلك المتكامل لتعلم الصلاة الصحيحة بتدبر وخشوع تام يلامس الروح.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div onclick="openPrayerLesson('خطوات الصلاة الصحيحة', 'steps')" class="glass-card p-5 flex items-center gap-4 cursor-pointer hover:bg-white/10">
+                            <div class="w-12 h-12 rounded-2xl bg-sky-500/20 flex items-center justify-center text-sky-400">
+                                <i data-lucide="user-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">صفة الصلاة</h4>
+                                <p class="text-[10px] text-white/50">شرح عملي لكل ركن في الصلاة</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openPrayerLesson('أسرار الخشوع في الصلاة', 'khushu')" class="glass-card p-5 flex items-center gap-4 cursor-pointer hover:bg-white/10">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                <i data-lucide="shield-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">طرق تحصيل الخشوع</h4>
+                                <p class="text-[10px] text-white/50">كيف تمنع السرحان وتزيد التركيز</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openPrayerLesson('تدبر معاني أقوال الصلاة', 'meanings')" class="glass-card p-5 flex items-center gap-4 cursor-pointer hover:bg-white/10">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                <i data-lucide="message-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">التدبر في الصلاة</h4>
+                                <p class="text-[10px] text-white/50">فهم أسرار الفاتحة والتسبيح</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        async function openPrayerLesson(title, type) {
+            const sheet = document.getElementById('full-sheet');
+            sheet.innerHTML = `
+                <div class="sticky top-0 bg-indigo-900 p-5 text-white flex justify-between items-center z-50">
+                    <h3 class="font-bold text-sm">${title}</h3>
+                    <button onclick="closeSheet()" class="p-2 bg-white/10 rounded-full"><i data-lucide="x"></i></button>
+                </div>
+                <div class="p-6 space-y-6 bg-slate-50 min-h-screen text-right">
+                    <div id="lesson-content" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 text-slate-700 leading-8">
+                        <div class="flex flex-col items-center py-20">
+                            <i data-lucide="loader-2" class="animate-spin text-indigo-500 mb-4" size="48"></i>
+                            <p class="text-slate-500 font-bold">جاري تحميل الدرس الإيماني...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            sheet.classList.remove('hidden');
+            lucide.createIcons();
+
+            const prompt = `اكتب درساً تعليمياً مفصلاً وملهماً حول "${title}"، يتضمن نصائح عملية لكيفية الصلاة بخشوع وتدبر، مع ذكر أسرار الخشوع ومنع السرحان.`;
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "تعذر التحميل.";
+                document.getElementById('lesson-content').innerHTML = `<div class="space-y-4">${text.split('\n').map(l => l.trim() ? `<p>${l}</p>` : '').join('')}</div>`;
+            } catch (e) {
+                document.getElementById('lesson-content').innerHTML = "تحقق من اتصالك بالإنترنت.";
+            }
+        }
+
+        function renderAthkar() {
+            document.getElementById('main-content').innerHTML = `<div class="pt-4 text-center text-white/50">جاري تطوير قسم الأذكار الموسع...</div>`;
+        }
+
+        function openSurahDetails(name, index) {
+            const sheet = document.getElementById('full-sheet');
+            sheet.innerHTML = `
+                <div class="sticky top-0 bg-amber-600 p-5 text-white flex justify-between items-center z-50">
+                    <h3 class="font-bold">سورة ${name}</h3>
+                    <button onclick="closeSheet()" class="p-2 bg-white/10 rounded-full"><i data-lucide="x"></i></button>
+                </div>
+                <div class="p-6 bg-white min-h-screen">
+                    <div class="p-6 bg-amber-50 rounded-3xl border border-amber-100 mb-6">
+                        <h4 class="font-black text-amber-800">تفسير وفضل السورة</h4>
+                        <p id="surah-virtue" class="text-sm text-amber-900/80 mt-2 leading-7">جاري التحميل...</p>
+                    </div>
+                </div>
+            `;
+            sheet.classList.remove('hidden');
+            lucide.createIcons();
+            fetchSurahAI(name);
+        }
+
+        async function fetchSurahAI(surahName) {
+            const prompt = `اكتب فضل سورة ${surahName} وتفسير موجز لمقاصدها.`;
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                document.getElementById('surah-virtue').innerText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            } catch (e) {
+                document.getElementById('surah-virtue').innerText = "حدث خطأ.";
+            }
+        }
+
+        function openAcademy() { switchTab('prayer'); }
+        function closeSheet() { document.getElementById('full-sheet').classList.add('hidden'); }
+        function incrementTasbih() { tasbihCount++; document.getElementById('tasbih-val').innerText = tasbihCount; }
+        function vibrate() { if (window.navigator.vibrate) window.navigator.vibrate(50); }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
